@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 public class Rental {
 
+
     private Long id;
     private Long carId;
     private Long customerId;
@@ -15,6 +16,8 @@ public class Rental {
     private BigDecimal totalFee;
     private LocalDate paymentDueDate;
     private String additionalItems;
+
+    public Rental() {}
 
     public Rental(Long id, Long carId, Long customerId, Long companyId, String licenseNumber, LocalDate rentalStartDate, int rentalDurationDays, BigDecimal totalFee, LocalDate paymentDueDate, String additionalItems) {
         this.id = id;
@@ -120,4 +123,5 @@ public class Rental {
     public void setAdditionalItems(String additionalItems) {
         this.additionalItems = additionalItems;
     }
+
 }

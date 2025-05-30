@@ -1,7 +1,6 @@
 package service;
 
 import dao.MaintenanceRecordDao;
-import dto.MaintenanceRecordDetail;
 import entitiy.MaintenanceRecord;
 
 import java.util.List;
@@ -32,10 +31,6 @@ public class MaintenanceRecordService {
 
     public void delete(Long id) {
         maintenanceRecordDao.delete(id);
-    }
-
-    public List<MaintenanceRecordDetail> findMaintenanceRecordDetailsByCarId(Long id) {
-        return maintenanceRecordDao.findMaintenanceRecordDetailsByCarId(id);
     }
 
     public void deleteBySql(String sql) {

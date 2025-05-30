@@ -6,7 +6,6 @@ import entitiy.CampingCar;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class CampingCarDao {
 
@@ -43,7 +42,9 @@ public class CampingCarDao {
     }
 
     public List<CampingCar> findAll() {
-        String sql = "SELECT * FROM CampingCar";
+        String sql = "SELECT cc.*, ccc.name AS company_name " +
+                "FROM CampingCar cc " +
+                "JOIN CampingCarCompany ccc ON cc.company_id = ccc.company_id";
         List<CampingCar> cars = new ArrayList<>();
 
         try (Connection con = DBConnectionUtil.getConnection();
@@ -62,6 +63,8 @@ public class CampingCarDao {
                         rs.getBigDecimal("rental_price"),
                         rs.getDate("registration_date").toLocalDate()
                 );
+                car.setCompanyName(rs.getString("company_name"));
+
                 cars.add(car);
             }
         } catch (SQLException e) {
@@ -69,6 +72,35 @@ public class CampingCarDao {
             throw new IllegalArgumentException(e);
         }
 
+        return cars;
+    }
+    public List<CampingCar> findAllIncludingRented() {
+        String sql = "SELECT cc.*, ccc.name AS company_name\n" +
+                "FROM CampingCar cc\n" +
+                "JOIN CampingCarCompany ccc ON cc.company_id = ccc.company_id";
+        List<CampingCar> cars = new ArrayList<>();
+        try (Connection con = DBConnectionUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                CampingCar car = new CampingCar(
+                        rs.getLong("car_id"),       // 반드시 car_id
+                        rs.getLong("company_id"),
+                        rs.getString("car_name"),
+                        rs.getString("license_plate"),
+                        rs.getInt("capacity"),
+                        rs.getString("image_url"),
+                        rs.getString("description"),
+                        rs.getBigDecimal("rental_price"),
+                        rs.getDate("registration_Date").toLocalDate()
+                );
+                car.setCompanyName(rs.getString("company_name"));
+                cars.add(car);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException(e);
+        }
         return cars;
     }
 
@@ -82,7 +114,7 @@ public class CampingCarDao {
                 image_url = ?,
                 description = ?,
                 rental_price = ?,
-                registrationDate = ?
+                registration_date = ?
             WHERE id = ?
             """;
         try (Connection con = DBConnectionUtil.getConnection();
@@ -128,6 +160,31 @@ public class CampingCarDao {
             throw new IllegalArgumentException(e);
         }
     }
+    public CampingCar findById(Long carId) {
+        String sql = "SELECT * FROM CampingCar WHERE car_id = ?";
+        try (Connection con = DBConnectionUtil.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setLong(1, carId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new CampingCar(
+                        rs.getLong("car_id"),
+                        rs.getLong("company_id"),
+                        rs.getString("car_name"),
+                        rs.getString("license_plate"),
+                        rs.getInt("capacity"),
+                        rs.getString("image_url"),
+                        rs.getString("description"),
+                        rs.getBigDecimal("rental_price"),
+                        rs.getDate("registration_date").toLocalDate()
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            throw new IllegalArgumentException("CampingCar 조회 실패", e);
+        }
+        return null;
+    }
 
     public void deleteBySql(String sql) {
         try (Connection con = DBConnectionUtil.getConnection();
@@ -138,40 +195,6 @@ public class CampingCarDao {
             e.printStackTrace();
             throw new IllegalArgumentException(e);
         }
-    }
 
-    public Vector<String> getColumnNames() {
-        Vector<String> columnNames = new Vector<>();
-        columnNames.add("ID");
-        columnNames.add("Company ID");
-        columnNames.add("Car Name");
-        columnNames.add("License Plate");
-        columnNames.add("Capacity");
-        columnNames.add("Image URL");
-        columnNames.add("Description");
-        columnNames.add("Rental Price");
-        columnNames.add("Registration Date");
-        return columnNames;
-    }
-
-    public Vector<Vector<Object>> getTableData() {
-        List<CampingCar> cars = findAll(); // CampingCarDao에 이미 존재하는 메서드라고 가정
-        Vector<Vector<Object>> data = new Vector<>();
-
-        for (CampingCar car : cars) {
-            Vector<Object> row = new Vector<>();
-            row.add(car.getId());
-            row.add(car.getCompanyId());
-            row.add(car.getCarName());
-            row.add(car.getLicensePlate());
-            row.add(car.getCapacity());
-            row.add(car.getImageUrl());
-            row.add(car.getDescription());
-            row.add(car.getRentalPrice());
-            row.add(car.getRegistrationDate());
-            data.add(row);
-        }
-
-        return data;
     }
 }

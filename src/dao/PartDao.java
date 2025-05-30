@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class PartDao {
 
@@ -52,7 +51,7 @@ public class PartDao {
 
             while (rs.next()) {
                 Part part = new Part(
-                        rs.getLong("part_id"),
+                        rs.getLong("id"),
                         rs.getString("part_name"),
                         rs.getBigDecimal("unit_price"),
                         rs.getInt("stock_quantity"),
@@ -133,35 +132,5 @@ public class PartDao {
             e.printStackTrace();
             throw new IllegalStateException("부품 삭제 실패", e);
         }
-    }
-
-    public Vector<String> getColumnNames() {
-        Vector<String> columnNames = new Vector<>();
-        columnNames.add("ID");
-        columnNames.add("Part Name");
-        columnNames.add("Unit Price");
-        columnNames.add("Stock Quantity");
-        columnNames.add("Arrival Date");
-        columnNames.add("Supplier Name");
-        return columnNames;
-    }
-
-    public Vector<Vector<Object>> getTableData() {
-        List<Part> parts = findAll(); // findAll() 메서드가 정의되어 있어야 합니다.
-        Vector<Vector<Object>> data = new Vector<>();
-
-        for (Part part : parts) {
-            Vector<Object> row = new Vector<>();
-            row.add(part.getId());
-            row.add(part.getPartName());
-            row.add(part.getUnitPrice());
-            row.add(part.getStockQuantity());
-            row.add(part.getArrivalDate());
-            row.add(part.getSupplierName());
-            data.add(row);
-        }
-
-        return data;
-
     }
 }

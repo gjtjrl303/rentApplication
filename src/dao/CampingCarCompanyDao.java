@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class CampingCarCompanyDao {
 
@@ -79,7 +78,7 @@ public class CampingCarCompanyDao {
         ) {
             while (rs.next()) {
                 CampingCarCompany company = new CampingCarCompany(
-                        rs.getLong("company_id"),
+                        rs.getLong(  "company_id"),
                         rs.getString("name"),
                         rs.getString("address"),
                         rs.getString("phone"),
@@ -119,31 +118,6 @@ public class CampingCarCompanyDao {
         }
     }
 
-    public Vector<String> getColumnNames() {
-        Vector<String> columnNames = new Vector<>();
-        columnNames.add("ID");
-        columnNames.add("Name");
-        columnNames.add("Address");
-        columnNames.add("Phone");
-        columnNames.add("Manager Name");
-        columnNames.add("Manager Email");
-        return columnNames;
-    }
 
-    public Vector<Vector<Object>> getTableData() {
-        List<CampingCarCompany> companies = findAll();
-        Vector<Vector<Object>> data = new Vector<>();
 
-        for (CampingCarCompany company : companies) {
-            Vector<Object> row = new Vector<>();
-            row.add(company.getId());
-            row.add(company.getName());
-            row.add(company.getAddress());
-            row.add(company.getPhone());
-            row.add(company.getManagerName());
-            row.add(company.getManagerEmail());
-            data.add(row);
-        }
-        return data;
-    }
 }

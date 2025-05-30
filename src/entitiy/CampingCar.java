@@ -14,7 +14,7 @@ public class CampingCar {
     private String description;
     private BigDecimal rentalPrice;
     private LocalDate registrationDate;
-
+    private String companyName;
     public CampingCar(Long id, Long companyId, String carName, String licensePlate, int capacity, String imageUrl, String description, BigDecimal rentalPrice, LocalDate registrationDate) {
         this.id = id;
         this.companyId = companyId;
@@ -109,14 +109,11 @@ public class CampingCar {
     public void setRegistrationDate(LocalDate registrationDate) {
         this.registrationDate = registrationDate;
     }
+    public String getCompanyName() {
+        return companyName;
+    }
 
-    @Override
-    public String toString() {
-        return "CampingCar{" +
-                ", carName='" + carName + '\'' +
-                ", licensePlate='" + licensePlate + '\'' +
-                ", capacity=" + capacity +
-                ", rentalPrice=" + rentalPrice +
-                '}';
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 }

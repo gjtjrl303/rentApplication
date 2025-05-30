@@ -1,9 +1,9 @@
 package service;
 
 import dao.ExternalRepairDao;
-import dto.ExternalRepairDetail;
 import entitiy.ExternalRepair;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class ExternalRepairService {
@@ -34,11 +34,9 @@ public class ExternalRepairService {
         externalRepairDao.delete(id);
     }
 
-    public List<ExternalRepairDetail> findExternalRepairDetailsByCarId(Long carId) {
-        return externalRepairDao.findExternalRepairDetailsByCarId(carId);
-    }
-
     public void deleteBySql(String sql) {
         externalRepairDao.deleteBySql(sql);
     }
+
+
 }

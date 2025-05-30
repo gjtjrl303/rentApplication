@@ -26,7 +26,11 @@ public class CampingCarService {
     }
 
     public List<CampingCar> findAll() {
-        return campingCarDao.findAll();
+        return campingCarDao.findAll(); // DAO도 동일하게 반환해야 함
+    }
+    // CampingCarService.java
+    public List<CampingCar> findAllIncludingRented() {
+        return campingCarDao.findAllIncludingRented();
     }
 
     public void delete(Long id) {

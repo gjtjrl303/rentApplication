@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 public class RepairShopDao {
 
@@ -129,34 +128,5 @@ public class RepairShopDao {
             e.printStackTrace();
             throw new IllegalStateException("RepairShop 삭제 실패", e);
         }
-    }
-
-    public Vector<String> getColumnNames() {
-        Vector<String> columnNames = new Vector<>();
-        columnNames.add("ID");
-        columnNames.add("Name");
-        columnNames.add("Address");
-        columnNames.add("Phone");
-        columnNames.add("Manager Name");
-        columnNames.add("Manager Email");
-        return columnNames;
-    }
-
-    public Vector<Vector<Object>> getTableData() {
-        List<RepairShop> shops = findAll(); // findAll()이 구현되어 있어야 함
-        Vector<Vector<Object>> data = new Vector<>();
-
-        for (RepairShop shop : shops) {
-            Vector<Object> row = new Vector<>();
-            row.add(shop.getId());
-            row.add(shop.getName());
-            row.add(shop.getAddress());
-            row.add(shop.getPhone());
-            row.add(shop.getManagerName());
-            row.add(shop.getManagerEmail());
-            data.add(row);
-        }
-
-        return data;
     }
 }
